@@ -30,3 +30,5 @@ class Tree:
 	def __init__(self, value):
 		self.root = Node(value)
 
+	def getRoot(self):
+		return self.root
