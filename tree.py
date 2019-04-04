@@ -6,6 +6,9 @@ class Node:
 		self.value = value
 		self.childs = {}
 
+	def getValue(self):
+		return self.value
+
 	def isLeaf(self):
 		if not self.childs:
 			return True
@@ -20,11 +23,10 @@ class Node:
 	def printNode(self):
 		print "Node value: " + str(self.value)
 		print "childs"
-		for direction, child in self.childs:
+		for direction, child in self.childs.items():
 			print "\tdirection: " + str(direction)
-			print "\tvalue" + str(child)
+			print "\tvalue: " + str(child.getValue())
 		print
-
 
 class Tree:
 	def __init__(self, value):
