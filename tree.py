@@ -16,7 +16,7 @@ class Node:
 
 	def insertChild(self, direction, value):
 		if direction in self.childs:
-			print "Direction ->" + str(direction) + "<-is already set in this node"
+			print "Direction ->" + str(direction) + "<- is already set in this node"
 		else:
 			self.childs[direction] = Node(value)
 #	tests
@@ -35,3 +35,5 @@ class Tree:
 
 	def getRoot(self):
 		return self.root
+
+	
