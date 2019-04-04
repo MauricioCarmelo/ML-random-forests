@@ -30,10 +30,14 @@ class Node:
 
 
 class Tree:
+	"""
 	def __init__(self, value):
-		self.root = Node(value)
+		self.root = Node(value) """
+	def __init__(self, dataframe):
+		self.root = None
 
 	def getRoot(self):
 		return self.root
 
-	
+	def buildTree(self, cur_node, dataframe):
+
