@@ -15,8 +15,9 @@ class Node:
 		return False
 
 	def insertChild(self, direction, value):
+		self.value = None # Make sure that this node has empty value, as this is not a leaf anymore
 		if direction in self.childs:
-			print "Direction is already set"
+			print "Direction ->" + str(direction) + "<-is already set in this node"
 		else:
 			self.childs[direction] = Node(value)
 #	tests
@@ -27,6 +28,7 @@ class Node:
 			print "\tdirection: " + str(direction)
 			print "\tvalue: " + str(child.getValue())
 		print
+
 
 class Tree:
 	def __init__(self, value):
