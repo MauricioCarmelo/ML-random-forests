@@ -17,5 +17,7 @@ class Node:
 		else:
 			self.childs[direction] = Node(name)
 
-
+class Tree:
+	def __init__(self, value):
+		self.root = Node(value)
 
