@@ -13,7 +13,9 @@ class Node:
 
 	def insertChild(self, direction, name):
 		if direction in self.childs:
-			print "Node direction is already set"
+			print "Direction is already set"
 		else:
 			self.childs[direction] = Node(name)
-			
+
+
+
