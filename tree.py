@@ -35,21 +35,28 @@ class Tree:
 		self.root = Node(value) """
 	def __init__(self, dataframe):
 		self.root = None
-"""
-		[best_atribute, list_of_subframe] = getWinner()
+
+		#best_attribute = winner()
+		
 		self.root = Node(best_attribute)
 		for subframe in list_of_subframe:
 			buildTree(self.root, subframe)
-"""
 
 	def getRoot(self):
 		return self.root
 
-	def splitDataframe(self, dataframe):
+	def splitDataframe(self, attribute, dataframe):
 		d = {}
-		
+		# if attribute is qualitative
+		values = dataframe[attribute].unique()
+		for value in values:
+			subset = dataframe.loc[dataframe[attribute] == value]
+			d[value] = subset
+		return d, values
+
 
 	def buildTree(self, cur_node, dataframe):
-		datagrames = splitDataframe(dataframe)
+		datagrams, directions = splitDataframe(cur_node.getValue(), dataframe)
+
 
 
