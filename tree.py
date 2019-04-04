@@ -2,7 +2,7 @@ import pandas as pd
 import numpy
 
 class Node:
-	def __init__(self, value=None):
+	def __init__(self, value):
 		self.value = value
 		self.childs = {}
 
@@ -15,7 +15,6 @@ class Node:
 		return False
 
 	def insertChild(self, direction, value):
-		self.value = None # Make sure that this node has empty value, as this is not a leaf anymore
 		if direction in self.childs:
 			print "Direction ->" + str(direction) + "<-is already set in this node"
 		else:
