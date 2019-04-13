@@ -33,17 +33,17 @@ class Tree:
 	"""
 	def __init__(self, value):
 		self.root = Node(value) """
-	def __init__(self, dataframe):
+
+	def __init__(self):
 		self.root = None
-
-		#best_attribute = winner()
 		
-		self.root = Node(best_attribute)
-		for subframe in list_of_subframe:
-			buildTree(self.root, subframe)
-
 	def getRoot(self):
 		return self.root
+
+	def loadDataframe(self, filepath):
+		self.filepath = filepath
+		self.dataframe = pd.read_csv(self.filepath) # open dataframe from CSV file
+
 
 	def splitDataframe(self, attribute, dataframe):
 		d = {}
@@ -54,9 +54,31 @@ class Tree:
 			d[value] = subset
 		return d, values
 
+	
+	def winner(self):
+		return "temperatura"
 
-	def buildTree(self, cur_node, dataframe):
-		datagrams, directions = splitDataframe(cur_node.getValue(), dataframe)
+	def buildTree(self):
 
+		best_attribute = self.winner()
+
+		self.root = Node(best_attribute)
+
+		subframes_d, directions = self.splitDataframe(self.root.getValue(), self.dataframe)
+
+		for key, val in subframes_d.items():
+			print key
+			print val
+			print
+
+#		for subframe in list_of_subframe:
+#			buildTreeRecursively(self.root, subframe)
+
+
+
+
+	def buildTreeRecursively(self, cur_node, dataframe):
+		#datagrams, directions = splitDataframe(cur_node.getValue(), dataframe)
+		print "nao estou sendo chamada ainda"
 
 
