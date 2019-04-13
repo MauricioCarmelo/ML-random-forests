@@ -9,6 +9,9 @@ class Node:
 	def getValue(self):
 		return self.value
 
+	def setValue(self, value):
+		self.value = value
+
 	def isLeaf(self):
 		if not self.childs:
 			return True
@@ -19,6 +22,10 @@ class Node:
 			print "Direction ->" + str(direction) + "<- is already set in this node"
 		else:
 			self.childs[direction] = Node(value)
+
+	def getChilds(self):
+		return self.root.childs
+
 #	tests
 	def printNode(self):
 		print "Node value: " + str(self.value)
@@ -58,27 +65,32 @@ class Tree:
 	def winner(self):
 		return "temperatura"
 
+
 	def buildTree(self):
 
-		best_attribute = self.winner()
-
+		best_attribute = self.winner(self.dataframe)
 		self.root = Node(best_attribute)
-
 		subframes_d, directions = self.splitDataframe(self.root.getValue(), self.dataframe)
 
-		for key, val in subframes_d.items():
-			print key
-			print val
-			print
-
-#		for subframe in list_of_subframe:
-#			buildTreeRecursively(self.root, subframe)
-
-
-
+		for attribute_value, subframe in subframes_d.items():
+			self.root.insertChild(attribute_value, None)
+			self.root.printNode()
+			self.buildTreeRecursively(self.root.childs[attribute_value], subframe)
+			self.root.printNode()
 
 	def buildTreeRecursively(self, cur_node, dataframe):
-		#datagrams, directions = splitDataframe(cur_node.getValue(), dataframe)
-		print "nao estou sendo chamada ainda"
+	
+		best_attribute = winner(dataframe)
+		cur_node.setValue(best_attribute)
 
+		## condicoes de parada para a funcao recursiva
+
+		subframes_d, directions = self.splitDataframe(cur_node.getValue(), dataframe)
+
+		## condicoes de parada para a funcao recursiva
+
+		for attribute_value, subframe in subframes_d.items():
+
+			cur_node.insertChild(attribute_value, None)
+			self.buildTreeRecursively(cur_node.childs[attribute_value], subframe)
 
