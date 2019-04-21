@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy
+import math
 
 class Node:
 	def __init__(self, value):
@@ -35,7 +36,6 @@ class Node:
 			print "\tvalue: " + str(child.getValue())
 		print
 
-
 class Tree:
 	"""
 	def __init__(self, value):
@@ -43,6 +43,9 @@ class Tree:
 
 	def __init__(self):
 		self.root = None
+
+	def setTarget(self, target):
+		self.target = target
 		
 	def getRoot(self):
 		return self.root
@@ -60,9 +63,60 @@ class Tree:
 			subset = dataframe.loc[dataframe[attribute] == value]
 			d[value] = subset
 		return d, values
-
 	
-	def winner(self):
+	def attributeEntropy(self, dataframe):
+		E = {}
+		for d in dataframe.keys():
+			e = 0
+			entropy = 0
+			n = float(len(dataframe))
+			for item in dataframe[d].unique():
+				x = len(dataframe.loc[dataframe[d] == item])
+				e = (x/n)*(math.log((x/n), 2))
+				entropy = entropy + (-1)*e
+			E[d] = entropy
+		return E
+	"""
+	def valueEntropy(self, dataframe, attribute, value):
+		entropy = 0
+		for item in dataframe[attribute].unique():
+			e = 0
+			subframe = dataframe.loc[dataframe[attribute] == value]
+			print subframe
+			n = float(len(subframe))
+			for c in subframe[self.target].unique():
+				x = len(subframe.loc[subframe[self.target] == c])
+				e = (x/n)*(math.log((x/n), 2))
+				entropy = entropy + e
+		return entropy """
+
+	def valueEntropy(self, dataframe, attribute, value):
+		entropy = 0
+		e = 0
+		subframe = dataframe.loc[dataframe[attribute] == value]
+		n = float(len(subframe))
+		for c in subframe[self.target].unique():
+			
+
+		return 2
+
+	def informationGain(self, dataframe):
+		Entropy = self.attributeEntropy(dataframe)
+		infoGain = {}
+		for key, val in Entropy.items():
+			gain = 0
+			n = float(len(dataframe))
+			for item in dataframe[key].unique():
+				x = len(dataframe.loc[dataframe[d] == item])
+				gain = (x/n) * valueEntropy(dataframe, key, item)
+
+			infoGain[key] = val - gain
+		return infoGain
+
+	def winner(self, dataframe):
+		# Information Gain (ID3)
+		# calcular a entropia
+
 		return "temperatura"
 
 
