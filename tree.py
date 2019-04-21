@@ -76,29 +76,19 @@ class Tree:
 				entropy = entropy + (-1)*e
 			E[d] = entropy
 		return E
-	"""
-	def valueEntropy(self, dataframe, attribute, value):
-		entropy = 0
-		for item in dataframe[attribute].unique():
-			e = 0
-			subframe = dataframe.loc[dataframe[attribute] == value]
-			print subframe
-			n = float(len(subframe))
-			for c in subframe[self.target].unique():
-				x = len(subframe.loc[subframe[self.target] == c])
-				e = (x/n)*(math.log((x/n), 2))
-				entropy = entropy + e
-		return entropy """
 
 	def valueEntropy(self, dataframe, attribute, value):
 		entropy = 0
 		e = 0
 		subframe = dataframe.loc[dataframe[attribute] == value]
 		n = float(len(subframe))
+		print subframe
+		print n
 		for c in subframe[self.target].unique():
-			
-
-		return 2
+			x = len(subframe.loc[subframe[self.target] == c])
+			e = -(x/n)*(math.log((x/n), 2))
+			entropy = entropy + e
+		return entropy
 
 	def informationGain(self, dataframe):
 		Entropy = self.attributeEntropy(dataframe)
