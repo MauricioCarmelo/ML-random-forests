@@ -36,10 +36,8 @@ class Node:
 			print "\tvalue: " + str(child.getValue())
 		print
 
+
 class Tree:
-	"""
-	def __init__(self, value):
-		self.root = Node(value) """
 
 	def __init__(self):
 		self.root = None
@@ -132,4 +130,3 @@ class Tree:
 
 			cur_node.insertChild(attribute_value, None)
 			self.buildTreeRecursively(cur_node.childs[attribute_value], subframe)
-
