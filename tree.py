@@ -63,27 +63,24 @@ class Tree:
 			subset = dataframe.loc[dataframe[attribute] == value]
 			d[value] = subset
 		return d, values
-	
-	def attributeEntropy(self, dataframe):
-		E = {}
-		for d in dataframe.keys():
-			e = 0
-			entropy = 0
-			n = float(len(dataframe))
-			for item in dataframe[d].unique():
-				x = len(dataframe.loc[dataframe[d] == item])
-				e = (x/n)*(math.log((x/n), 2))
-				entropy = entropy + (-1)*e
-			E[d] = entropy
-		return E
+
+	def entropy(self, dataframe):
+		entropy = 0
+		e = 0
+		n = float(len(dataframe))
+		for c in dataframe[self.target].unique():
+			x = len(dataframe.loc[dataframe[self.target] == c])
+			e = -(x/n)*(math.log((x/n), 2))
+			entropy = entropy + e
+		return entropy
+
+	"""
 
 	def valueEntropy(self, dataframe, attribute, value):
 		entropy = 0
 		e = 0
 		subframe = dataframe.loc[dataframe[attribute] == value]
 		n = float(len(subframe))
-		print subframe
-		print n
 		for c in subframe[self.target].unique():
 			x = len(subframe.loc[subframe[self.target] == c])
 			e = -(x/n)*(math.log((x/n), 2))
@@ -92,14 +89,14 @@ class Tree:
 
 	def informationGain(self, dataframe):
 		Entropy = self.attributeEntropy(dataframe)
+		print Entropy
 		infoGain = {}
 		for key, val in Entropy.items():
 			gain = 0
 			n = float(len(dataframe))
 			for item in dataframe[key].unique():
-				x = len(dataframe.loc[dataframe[d] == item])
-				gain = (x/n) * valueEntropy(dataframe, key, item)
-
+				x = len(dataframe.loc[dataframe[key] == item])
+				gain = gain + (x/n) * self.valueEntropy(dataframe, key, item)
 			infoGain[key] = val - gain
 		return infoGain
 
