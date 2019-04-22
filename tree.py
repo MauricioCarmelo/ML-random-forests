@@ -74,12 +74,9 @@ class Tree:
 			entropy = entropy + e
 		return entropy
 
-	"""
-
-	def valueEntropy(self, dataframe, attribute, value):
+	def valueEntropy(self, subframe):
 		entropy = 0
 		e = 0
-		subframe = dataframe.loc[dataframe[attribute] == value]
 		n = float(len(subframe))
 		for c in subframe[self.target].unique():
 			x = len(subframe.loc[subframe[self.target] == c])
@@ -88,16 +85,17 @@ class Tree:
 		return entropy
 
 	def informationGain(self, dataframe):
-		Entropy = self.attributeEntropy(dataframe)
-		print Entropy
+		entropy = self.entropy(dataframe)
 		infoGain = {}
-		for key, val in Entropy.items():
+		for attribute in dataframe.columns.values:
 			gain = 0
 			n = float(len(dataframe))
-			for item in dataframe[key].unique():
-				x = len(dataframe.loc[dataframe[key] == item])
-				gain = gain + (x/n) * self.valueEntropy(dataframe, key, item)
-			infoGain[key] = val - gain
+			for value in dataframe[attribute].unique():
+				subframe = dataframe.loc[dataframe[attribute] == value]
+				x = len(subframe)
+				gain = gain + (x/n) * self.valueEntropy(subframe)
+
+			infoGain[attribute] = entropy - gain
 		return infoGain
 
 	def winner(self, dataframe):
