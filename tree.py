@@ -82,7 +82,7 @@ class Tree:
 			entropy = entropy + e
 		return entropy
 
-	def informationGainID3(self, dataframe):
+	def informationGain(self, dataframe):
 		entropy = self.entropy(dataframe)
 		infoGain = {}
 		for attribute in dataframe.columns.values:
@@ -96,7 +96,7 @@ class Tree:
 			infoGain[attribute] = entropy - gain
 		return infoGain
 
-	def winner(self, dataframe):
+	def ID3(self, dataframe):
 		# Information Gain (ID3)
 
 
