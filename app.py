@@ -18,7 +18,7 @@ tree.setTarget("prato")
 dataframe = pd.read_csv("data/input_data2.csv")
 #tree.informationGain(dataframe)
 
-x = tree.valueEntropy(dataframe, "temperatura", "frio")
+x = tree.ID3(dataframe)
 print x
 
 
