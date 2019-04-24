@@ -98,14 +98,13 @@ class Tree:
 
 	def ID3(self, dataframe):
 		# Information Gain (ID3)
-
-
-		return "temperatura"
-
+		gains = self.informationGain(dataframe)
+#		print gains
+		return max(gains, key=gains.get)
 
 	def buildTree(self):
 
-		best_attribute = self.winner(self.dataframe)
+		best_attribute = self.ID3(self.dataframe)
 		self.root = Node(best_attribute)
 		subframes_d, directions = self.splitDataframe(self.root.getValue(), self.dataframe)
 
@@ -117,7 +116,7 @@ class Tree:
 
 	def buildTreeRecursively(self, cur_node, dataframe):
 	
-		best_attribute = winner(dataframe)
+		best_attribute = self.ID3(dataframe)
 		cur_node.setValue(best_attribute)
 
 		## condicoes de parada para a funcao recursiva
