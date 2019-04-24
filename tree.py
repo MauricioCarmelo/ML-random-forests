@@ -97,9 +97,7 @@ class Tree:
 		return infoGain
 
 	def ID3(self, dataframe):
-		# Information Gain (ID3)
 		gains = self.informationGain(dataframe)
-#		print gains
 		return max(gains, key=gains.get)
 
 	def buildTree(self):
