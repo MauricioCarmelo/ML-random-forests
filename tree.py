@@ -41,6 +41,8 @@ class Tree:
 
 	def __init__(self):
 		self.root = None
+		self.categorical = []
+		self.numeric = []
 
 	def setTarget(self, target):
 		self.target = target
@@ -48,8 +50,14 @@ class Tree:
 	def setCategoricalAttributes(self, categoricals):
 		self.categorical = set(categoricals)
 
+	def setNumericalAttributes(self, numerics):
+		self.numeric = set(numerics)
+
 	def isCategorical(self, attribute):
 		return attribute in self.categorical
+
+	def isNumerical(self, attribute):
+		return attribute in self.numeric
 		
 	def getRoot(self):
 		return self.root
@@ -91,15 +99,20 @@ class Tree:
 	def informationGain(self, dataframe):
 		entropy = self.entropy(dataframe)
 		infoGain = {}
+		#for attribute in self.categorical:
 		for attribute in dataframe.columns.values:
-			gain = 0
-			n = float(len(dataframe))
-			for value in dataframe[attribute].unique():
-				subframe = dataframe.loc[dataframe[attribute] == value]
-				x = len(subframe)
-				gain = gain + (x/n) * self.valueEntropy(subframe)
-
-			infoGain[attribute] = entropy - gain
+			if self.isCategorical(attribute):
+				gain = 0
+				n = float(len(dataframe))
+				for value in dataframe[attribute].unique():
+					subframe = dataframe.loc[dataframe[attribute] == value]
+					x = len(subframe)
+					gain = gain + (x/n) * self.valueEntropy(subframe)
+					infoGain[attribute] = entropy - gain
+			elif self.isNumerical(attribute):
+				## handle numerical attributes
+				print "should not enter here yet"
+				#infoGain[attribute] = entropy - gain
 		return infoGain
 
 	def ID3(self, dataframe):
