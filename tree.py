@@ -44,6 +44,12 @@ class Tree:
 
 	def setTarget(self, target):
 		self.target = target
+
+	def setCategoricalAttributes(self, categoricals):
+		self.categorical = set(categoricals)
+
+	def isCategorical(self, attribute):
+		return attribute in self.categorical
 		
 	def getRoot(self):
 		return self.root
@@ -98,6 +104,7 @@ class Tree:
 
 	def ID3(self, dataframe):
 		gains = self.informationGain(dataframe)
+		print gains
 		return max(gains, key=gains.get)
 
 	def buildTree(self):
