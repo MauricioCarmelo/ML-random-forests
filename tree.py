@@ -101,7 +101,6 @@ class Tree:
 	def informationGain(self, dataframe):
 		entropy = self.entropy(dataframe)
 		infoGain = {}
-		#for attribute in self.categorical:
 		for attribute in dataframe.columns.values:
 			if self.isCategorical(attribute):
 				gain = 0
@@ -119,13 +118,11 @@ class Tree:
 
 	def ID3(self, dataframe):
 		gains = self.informationGain(dataframe)
-		#print gains
 		return max(gains, key=gains.get)
 
 	def buildTree(self):
 
 		best_attribute = self.ID3(self.dataframe)
-		#print "Best attribute = " + str(best_attribute)
 		self.root = Node(best_attribute)
 		subframes_d, directions = self.splitDataframe(best_attribute, self.dataframe)
 
@@ -154,17 +151,6 @@ class Tree:
 			cur_node.childs[attribute_value] = Node()
 			cur_node.childs[attribute_value].setValue(
 				self.buildTreeRecursively(cur_node.childs[attribute_value], subframe))
-			# condicao de parada para folha
-#			if len(subframe[self.target].unique()) == 1:
-#				# create a leaf node
-#				cur_node.childs[attribute_value].childs[] = Node()
-#				cur_node.childs[attribute_value].setValue(subframe[self.target].unique()[0])
-				#return subframe[self.target].unique()[0]
-#				return best_attribute
-#			else:
-#				cur_node.childs[attribute_value] = Node()
-#				cur_node.childs[attribute_value].setValue(self.buildTreeRecursively(cur_node.childs[attribute_value], subframe))
-
 		return best_attribute
 
 
