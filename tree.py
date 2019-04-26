@@ -139,3 +139,13 @@ class Tree:
 			cur_node.childs[attribute_value].set_value(
 				self.build_tree_recursively(cur_node.childs[attribute_value], subframe))
 		return best_attribute
+
+	def print_tree(node):
+		if node.is_leaf():
+			print "Leaf: classe: " + str(node.get_value())
+			return 0
+		else:
+			print "Node value: " + str(node.get_value())
+			for direction, child in node.childs.items():
+				print "going to direction: " + str(direction)
+				print_tree(child)
