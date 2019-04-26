@@ -2,40 +2,32 @@ import pandas as pd
 import numpy
 import math
 
+
 class Node:
 
 	def __init__(self, value = None):
 		self.value = value
-		self.childs = {} # array of nodes
+		self.childs = {}		# Array of nodes
 
-	def getValue(self):
+	def get_value(self):
 		return self.value
 
-	def setValue(self, value):
+	def set_value(self, value):
 		self.value = value
 
-	def isLeaf(self):
+	def is_leaf(self):
 		if not self.childs:
 			return True
 		return False
 
-	def insertChild(self, direction, value):
+	def insert_child(self, direction, value):
 		if direction in self.childs:
 			print "Direction ->" + str(direction) + "<- is already set in this node"
 		else:
 			self.childs[direction] = Node(value)
 
-	def getChilds(self):
+	def get_childs(self):
 		return self.root.childs
-
-#	tests
-	def printNode(self):
-		print "Node value: " + str(self.value)
-		print "childs"
-		for direction, child in self.childs.items():
-			print "\tdirection: " + str(direction)
-			print "\tvalue: " + str(child.getValue())
-		print
 
 
 class Tree:
@@ -45,32 +37,31 @@ class Tree:
 		self.categorical = []
 		self.numeric = []
 
-	def setTarget(self, target):
+	def set_target(self, target):
 		self.target = target
 
-	def setCategoricalAttributes(self, categoricals):
+	def set_categorical_attributes(self, categoricals):
 		self.categorical = set(categoricals)
 
-	def setNumericalAttributes(self, numerics):
+	def set_numerical_attributes(self, numerics):
 		self.numeric = set(numerics)
 
-	def isCategorical(self, attribute):
+	def is_categorical(self, attribute):
 		return attribute in self.categorical
 
-	def isNumeric(self, attribute):
+	def is_numeric(self, attribute):
 		return attribute in self.numeric
 		
-	def getRoot(self):
+	def get_root(self):
 		return self.root
 
-	def loadDataframe(self, filepath):
+	def load_data_frame(self, filepath):
 		self.filepath = filepath
-		self.dataframe = pd.read_csv(self.filepath) # open dataframe from CSV file
+		self.dataframe = pd.read_csv(self.filepath)
 
-	def splitDataframe(self, attribute, dataframe):
+	def split_data_frame(self, attribute, dataframe):
 		d = {}
-		# if attribute is qualitative
-		if attribute == None:
+		if attribute == None:	# if attribute is qualitative #
 			print "Attribute is not defined"
 		values = dataframe[attribute].unique()
 		for value in values:
@@ -88,7 +79,7 @@ class Tree:
 			entropy = entropy + e
 		return entropy
 
-	def valueEntropy(self, subframe):
+	def value_entropy(self, subframe):
 		entropy = 0
 		e = 0
 		n = float(len(subframe))
@@ -98,57 +89,53 @@ class Tree:
 			entropy = entropy + e
 		return entropy
 
-	def informationGain(self, dataframe):
+	def information_gain(self, dataframe):
 		entropy = self.entropy(dataframe)
 		infoGain = {}
 		for attribute in dataframe.columns.values:
-			if self.isCategorical(attribute):
+			if self.is_categorical(attribute):
 				gain = 0
 				n = float(len(dataframe))
 				for value in dataframe[attribute].unique():
 					subframe = dataframe.loc[dataframe[attribute] == value]
 					x = len(subframe)
-					gain = gain + (x/n) * self.valueEntropy(subframe)
+					gain = gain + (x/n) * self.value_entropy(subframe)
 					infoGain[attribute] = entropy - gain
-			elif self.isNumeric(attribute):
-				## handle numerical attributes
+
+			elif self.is_numeric(attribute):		## handle numerical attributes
 				print "should not enter here yet"
 				#infoGain[attribute] = entropy - gain
+
 		return infoGain
 
-	def ID3(self, dataframe):
-		gains = self.informationGain(dataframe)
+	def id3(self, dataframe):
+		gains = self.information_gain(dataframe)
 		return max(gains, key=gains.get)
 
-	def buildTree(self):
-
-		best_attribute = self.ID3(self.dataframe)
+	def build_tree(self):
+		best_attribute = self.id3(self.dataframe)
 		self.root = Node(best_attribute)
-		subframes_d, directions = self.splitDataframe(best_attribute, self.dataframe)
+		subframes_d, directions = self.split_data_frame(best_attribute, self.dataframe)
 
 		for attribute_value, subframe in subframes_d.items():
-
-			# condicao de parada
 			if len(subframe[self.target].unique()) == 1:
 				self.root.childs[attribute_value] = Node(subframe[self.target].unique())
 
 			else:
 				self.root.childs[attribute_value] = Node()
-				self.root.childs[attribute_value].setValue(self.buildTreeRecursively(self.root.childs[attribute_value], subframe))
+				self.root.childs[attribute_value].set_value(
+					self.build_tree_recursively(self.root.childs[attribute_value], subframe))
 
 		return self.root
 
-	def buildTreeRecursively(self, cur_node, dataframe):
-
-		# condicao de parada
+	def build_tree_recursively(self, cur_node, dataframe):
 		if len(dataframe[self.target].unique()) == 1:
 			return dataframe[self.target].unique()
 
-		best_attribute = self.ID3(dataframe)#		cur_node.setValue(best_attribute)
-		subframes_d, directions = self.splitDataframe(best_attribute, dataframe)
-
+		best_attribute = self.id3(dataframe)#		cur_node.setValue(best_attribute)
+		subframes_d, directions = self.split_data_frame(best_attribute, dataframe)
 		for attribute_value, subframe in subframes_d.items():
 			cur_node.childs[attribute_value] = Node()
-			cur_node.childs[attribute_value].setValue(
-				self.buildTreeRecursively(cur_node.childs[attribute_value], subframe))
+			cur_node.childs[attribute_value].set_value(
+				self.build_tree_recursively(cur_node.childs[attribute_value], subframe))
 		return best_attribute
