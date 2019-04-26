@@ -3,9 +3,10 @@ import numpy
 import math
 
 class Node:
-	def __init__(self, value):
+
+	def __init__(self, value = None):
 		self.value = value
-		self.childs = {}
+		self.childs = {} # array of nodes
 
 	def getValue(self):
 		return self.value
@@ -56,7 +57,7 @@ class Tree:
 	def isCategorical(self, attribute):
 		return attribute in self.categorical
 
-	def isNumerical(self, attribute):
+	def isNumeric(self, attribute):
 		return attribute in self.numeric
 		
 	def getRoot(self):
@@ -66,10 +67,11 @@ class Tree:
 		self.filepath = filepath
 		self.dataframe = pd.read_csv(self.filepath) # open dataframe from CSV file
 
-
 	def splitDataframe(self, attribute, dataframe):
 		d = {}
 		# if attribute is qualitative
+		if attribute == None:
+			print "Attribute is not defined"
 		values = dataframe[attribute].unique()
 		for value in values:
 			subset = dataframe.loc[dataframe[attribute] == value]
@@ -109,7 +111,7 @@ class Tree:
 					x = len(subframe)
 					gain = gain + (x/n) * self.valueEntropy(subframe)
 					infoGain[attribute] = entropy - gain
-			elif self.isNumerical(attribute):
+			elif self.isNumeric(attribute):
 				## handle numerical attributes
 				print "should not enter here yet"
 				#infoGain[attribute] = entropy - gain
@@ -117,33 +119,52 @@ class Tree:
 
 	def ID3(self, dataframe):
 		gains = self.informationGain(dataframe)
-		print gains
+		#print gains
 		return max(gains, key=gains.get)
 
 	def buildTree(self):
 
 		best_attribute = self.ID3(self.dataframe)
+		#print "Best attribute = " + str(best_attribute)
 		self.root = Node(best_attribute)
-		subframes_d, directions = self.splitDataframe(self.root.getValue(), self.dataframe)
+		subframes_d, directions = self.splitDataframe(best_attribute, self.dataframe)
 
 		for attribute_value, subframe in subframes_d.items():
-			self.root.insertChild(attribute_value, None)
-			self.root.printNode()
-			self.buildTreeRecursively(self.root.childs[attribute_value], subframe)
-			self.root.printNode()
+
+			# condicao de parada
+			if len(subframe[self.target].unique()) == 1:
+				self.root.childs[attribute_value] = Node(subframe[self.target].unique())
+
+			else:
+				self.root.childs[attribute_value] = Node()
+				self.root.childs[attribute_value].setValue(self.buildTreeRecursively(self.root.childs[attribute_value], subframe))
+
+		return self.root
 
 	def buildTreeRecursively(self, cur_node, dataframe):
-	
-		best_attribute = self.ID3(dataframe)
-		cur_node.setValue(best_attribute)
 
-		## condicoes de parada para a funcao recursiva
+		# condicao de parada
+		if len(dataframe[self.target].unique()) == 1:
+			return dataframe[self.target].unique()
 
-		subframes_d, directions = self.splitDataframe(cur_node.getValue(), dataframe)
-
-		## condicoes de parada para a funcao recursiva
+		best_attribute = self.ID3(dataframe)#		cur_node.setValue(best_attribute)
+		subframes_d, directions = self.splitDataframe(best_attribute, dataframe)
 
 		for attribute_value, subframe in subframes_d.items():
+			cur_node.childs[attribute_value] = Node()
+			cur_node.childs[attribute_value].setValue(
+				self.buildTreeRecursively(cur_node.childs[attribute_value], subframe))
+			# condicao de parada para folha
+#			if len(subframe[self.target].unique()) == 1:
+#				# create a leaf node
+#				cur_node.childs[attribute_value].childs[] = Node()
+#				cur_node.childs[attribute_value].setValue(subframe[self.target].unique()[0])
+				#return subframe[self.target].unique()[0]
+#				return best_attribute
+#			else:
+#				cur_node.childs[attribute_value] = Node()
+#				cur_node.childs[attribute_value].setValue(self.buildTreeRecursively(cur_node.childs[attribute_value], subframe))
 
-			cur_node.insertChild(attribute_value, None)
-			self.buildTreeRecursively(cur_node.childs[attribute_value], subframe)
+		return best_attribute
+
+
