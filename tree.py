@@ -152,5 +152,3 @@ class Tree:
 			cur_node.childs[attribute_value].setValue(
 				self.buildTreeRecursively(cur_node.childs[attribute_value], subframe))
 		return best_attribute
-
-
