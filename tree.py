@@ -139,3 +139,6 @@ class Tree:
 			cur_node.childs[attribute_value].set_value(
 				self.build_tree_recursively(cur_node.childs[attribute_value], subframe))
 		return best_attribute
+
+	def classify(self):
+		return 0
