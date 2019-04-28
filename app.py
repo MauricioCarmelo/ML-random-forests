@@ -1,24 +1,35 @@
 from tree import *
 
-"""
-tree = Tree("pessoa")
-tree.getRoot().insertChild("idade", 25)
-tree.getRoot().insertChild("nome", "mauricio")
-tree.getRoot().insertChild("altura", 1.85)
-tree.getRoot().insertChild("altura", 1.86)
-tree.getRoot().printNode()
-"""
+def print_tree(node):
+    if node.is_leaf():
+        print "classe: " + str(node.value)
+    else:
+        print "node with attribute: " + str(node.value)
+        for direction, child in node.childs.items():
+            print "going to direction: " + str(direction)
+            print_tree(child)
 
 tree = Tree()
-tree.loadDataframe("data/input_data2.csv")
-tree.setTarget("prato")
-#tree.buildTree()
-#print tree.getRoot().getValue()
+tree.load_data_frame("data/input_data3.csv")
 
-dataframe = pd.read_csv("data/input_data2.csv")
-#tree.informationGain(dataframe)
+tree.set_target("buys_computer")
 
-x = tree.ID3(dataframe)
-print x
+categoricals = ["age", "income", "student", "credit_rating"]
+numerics = []
+tree.set_categorical_attributes(categoricals)
+tree.set_numerical_attributes(numerics)
 
+raiz = tree.build_tree()
+
+print_tree(raiz)
+print
+print
+inst = {
+    "age": "youth",
+    "income": "high",
+    "student": "no",
+    "credit_rating": "fair"
+}
+
+print tree.classify(inst, raiz)
 
