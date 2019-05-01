@@ -1,5 +1,6 @@
 import math
-
+import Bootstrap
+"""
 x = 3/float(4)
 y = 1/float(4)
 
@@ -12,3 +13,12 @@ gain = -u*(math.log(u, 2)) - v*(math.log(v, 2))
 gain = (3/float(4)) * gain
 
 print result - gain
+"""
+
+dataframe = pd.read_csv("data/input_data3.csv")
+
+bootstrap = Bootstrap(
+
+
+
+

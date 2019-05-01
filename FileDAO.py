@@ -8,7 +8,7 @@ class FileDAO:
         self.file_path = ""
         self.data_frame = None
 
-    def load_data_frame(self, file_path):
+    def load_data_frame(self, filepath):
         self.file_path = filepath
         self.data_frame = pd.read_csv(self.file_path)
 
