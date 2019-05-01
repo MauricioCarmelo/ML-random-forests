@@ -16,15 +16,19 @@ class Bootstrap:
     def generate(self, dataframe):
         length = len(dataframe)
         training_indexes = [0] * length
-        for i in range(0, length):
+
+        training_indexes[1] = 2
+        training_indexes[2] = 1
+        #for i in range(0, length):
             #random = random() Generate ranrom number from 0 to length
-            random = 2
-            training_indexes[random] = 1
+            #random = 2
+            #training_indexes[random] += 1
 
         print training_indexes
         for idx, item in enumerate(training_indexes):
             if item:
-                self.training_set.append((dataframe.iloc[idx, :])*item)
+                for i in range(item):
+                    self.training_set = self.training_set.append((dataframe.iloc[idx, :]), ignore_index=True)
 
             else:
-                self.test_set.append(dataframe.iloc[idx, :])
+                self.test_set = self.test_set.append(dataframe.iloc[idx, :], ignore_index=True)
