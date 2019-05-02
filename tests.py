@@ -1,5 +1,6 @@
 import math
-import Bootstrap
+from Bootstrap import *
+import pandas as pd
 """
 x = 3/float(4)
 y = 1/float(4)
@@ -17,8 +18,14 @@ print result - gain
 
 dataframe = pd.read_csv("data/input_data3.csv")
 
-bootstrap = Bootstrap(
+bootstrap = Bootstrap()
+bootstrap.generate(dataframe)
 
+print "training set"
+print bootstrap.get_training_set()
+
+print "test set"
+print bootstrap.get_test_set()
 
 
 
