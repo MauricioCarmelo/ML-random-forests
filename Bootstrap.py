@@ -1,4 +1,5 @@
 import pandas as pd
+import random
 
 
 class Bootstrap:
@@ -17,12 +18,9 @@ class Bootstrap:
         length = len(dataframe)
         training_indexes = [0] * length
 
-        training_indexes[1] = 2
-        training_indexes[2] = 1
-        #for i in range(0, length):
-            #random = random() Generate ranrom number from 0 to length
-            #random = 2
-            #training_indexes[random] += 1
+        for i in range(0, length):
+            r_number = random.randint(0, length-1)
+            training_indexes[r_number] += 1
 
         print training_indexes
         for idx, item in enumerate(training_indexes):
