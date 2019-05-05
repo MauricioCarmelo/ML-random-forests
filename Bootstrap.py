@@ -22,11 +22,9 @@ class Bootstrap:
             r_number = random.randint(0, length-1)
             training_indexes[r_number] += 1
 
-        print training_indexes
         for idx, item in enumerate(training_indexes):
             if item:
                 for i in range(item):
                     self.training_set = self.training_set.append((dataframe.iloc[idx, :]), ignore_index=True)
-
             else:
                 self.test_set = self.test_set.append(dataframe.iloc[idx, :], ignore_index=True)

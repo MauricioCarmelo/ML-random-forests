@@ -34,8 +34,12 @@ class Tree:
 
 	def __init__(self):
 		self.root = None
+		self.dataframe = pd.DataFrame()
 		self.categorical = []
 		self.numeric = []
+
+	def set_dataframe(self, dataframe):
+		self.dataframe = dataframe
 
 	def set_target(self, target):
 		self.target = target
@@ -45,6 +49,12 @@ class Tree:
 
 	def set_numerical_attributes(self, numerics):
 		self.numeric = set(numerics)
+
+	def set_parameters(self, dataframe, target, categoricals, numerics):
+		self.set_dataframe(dataframe)
+		self.set_target(target)
+		self.set_categorical_attributes(categoricals)
+		self.set_numerical_attributes(numerics)
 
 	def is_categorical(self, attribute):
 		return attribute in self.categorical
@@ -102,7 +112,7 @@ class Tree:
 					gain = gain + (x/n) * self.value_entropy(subframe)
 					infoGain[attribute] = entropy - gain
 
-			elif self.is_numeric(attribute):		## handle numerical attributes
+			elif self.is_numeric(attribute):		# handle numerical attributes
 				print "should not enter here yet"
 				#infoGain[attribute] = entropy - gain
 
@@ -147,4 +157,3 @@ class Tree:
 		direction = instance[attribute]
 		next_node = cur_node.childs[direction]
 		return self.classify(instance, next_node)
-
