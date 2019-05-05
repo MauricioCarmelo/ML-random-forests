@@ -56,14 +56,18 @@ class Tree:
 		self.set_categorical_attributes(categoricals)
 		self.set_numerical_attributes(numerics)
 
+
+	def get_root(self):
+		return self.root
+
+	def get_dataframe(self):
+		return self.dataframe
+
 	def is_categorical(self, attribute):
 		return attribute in self.categorical
 
 	def is_numeric(self, attribute):
 		return attribute in self.numeric
-		
-	def get_root(self):
-		return self.root
 
 	def load_data_frame(self, filepath):
 		self.filepath = filepath
