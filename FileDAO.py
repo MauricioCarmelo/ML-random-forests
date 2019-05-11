@@ -19,7 +19,7 @@ class FileDAO:
 
     def get_folds(self, k):
         if not self.folds_d[k]:
-            self.folds_d[k] = self.generate_list_of_folds(k)
+            self.generate_list_of_folds(k)
         return self.folds_d[k]
 
     def generate_list_of_folds(self, k):
