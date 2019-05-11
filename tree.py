@@ -154,10 +154,13 @@ class Tree:
 				self.build_tree_recursively(cur_node.childs[attribute_value], subframe))
 		return best_attribute
 
-	def classify(self, instance, cur_node):
+	def classify_instance(self, instance, cur_node):
 		if cur_node.is_leaf():
 			return cur_node.value
 		attribute = cur_node.value
 		direction = instance[attribute]
 		next_node = cur_node.childs[direction]
-		return self.classify(instance, next_node)
+		return self.classify_instance(instance, next_node)
+
+	def classify(self, instance):
+		return self.classify_instance(instance, self.root)
