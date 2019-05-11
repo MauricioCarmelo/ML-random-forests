@@ -17,8 +17,10 @@ class Forest:
         self.tree_roots = []
         self.tt_tuples = []  # list of tuples of trees and the corresponding instances that will be used for testing
 
+        self.results = []
+
     def get_trees(self):
-        return self.tree_roots
+        return self.trees
 
     def get_tree_roots(self):
         return self.tree_roots
@@ -33,9 +35,21 @@ class Forest:
             tree = Tree()
             tree.set_parameters(bootstrap.get_training_set(), self.target, self.categorical, self.numeric)
             tree.build_tree()
-
             self.trees.append(tree)
             self.tree_roots.append(tree.get_root())
             t = (tree, bootstrap.get_test_set())    # tuple
             self.tt_tuples.append(t)
         return self.trees
+
+    def classify(self, test_set):
+        for instance in test_set:
+            correct_value = test_set[self.target]
+            votes = []
+            for tree in self.trees:
+                vote = tree.classify(instance)
+                votes.append(vote)
+            r = max(votes, votes.count)
+            self.results.append((correct_value, r))
+
+
+
