@@ -5,7 +5,7 @@ import math
 
 class Node:
 
-	def __init__(self, value = None):
+	def __init__(self, value=None):
 		self.value = value
 		self.childs = {}		# Array of nodes
 
@@ -37,6 +37,7 @@ class Tree:
 		self.dataframe = pd.DataFrame()
 		self.categorical = []
 		self.numeric = []
+		self.a_priori_class = ""
 
 	def set_dataframe(self, dataframe):
 		self.dataframe = dataframe
@@ -55,7 +56,7 @@ class Tree:
 		self.set_target(target)
 		self.set_categorical_attributes(categoricals)
 		self.set_numerical_attributes(numerics)
-
+		self.a_priori_class = dataframe[self.target].value_counts().argmax()
 
 	def get_root(self):
 		return self.root
@@ -156,9 +157,13 @@ class Tree:
 
 	def classify_instance(self, instance, cur_node):
 		if cur_node.is_leaf():
-			return cur_node.value
+			value = cur_node.value
+			value = value[0]			# return the value, not a list
+			return value
 		attribute = cur_node.value
 		direction = instance[attribute]
+		if not direction in cur_node.childs:
+			return self.a_priori_class
 		next_node = cur_node.childs[direction]
 		return self.classify_instance(instance, next_node)
 
