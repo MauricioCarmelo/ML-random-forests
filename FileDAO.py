@@ -35,3 +35,11 @@ class FileDAO:
             folds.append(self.dataframe[start:end])
         self.folds_d[k] = folds
 
+    @staticmethod
+    def save_dictionary(prefix, k, n_tree, info_as_dictionary):
+
+        info_as_dataframe = pd.DataFrame(info_as_dictionary)
+
+        filename = prefix + "_" + str(k) + "_" + str(n_tree)
+        path = "collected_data/" + filename + ".csv"
+        export_csv = info_as_dataframe.to_csv(path, index=None)
