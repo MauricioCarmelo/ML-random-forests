@@ -2,12 +2,14 @@
 
 class CMatrix:
 
-    def __init__(self, vp, vn, fp, fn):
-        self.vp = vp
-        self.vn = vn
-        self.fp = fp
-        self.fn = fn
-        self.n = float(self.vp+self.vn+self.fp+self.fn)
+    def __init__(self, positive_value):
+        self.positive_value = positive_value
+        self.vp = 0
+        self.vn = 0
+        self.fp = 0
+        self.fn = 0
+        #self.n = float(self.vp+self.vn+self.fp+self.fn)
+        self.n = 0
 
     def increase_vp(self):
         self.vp += 1
@@ -41,4 +43,23 @@ class CMatrix:
 
     def get_fp_rate(self):                  # taxa de falsos positivos TFP(f)
         return 1 - self.get_sensibility()
+
+    def judge(self, t):
+        correct_result = t[0]
+        guess = t[1]
+        if correct_result == self.positive_value:
+            if guess == self.positive_value:
+                self.vp += 1
+            else:
+                self.fn += 1
+        else:
+            if guess == self.positive_value:
+                self.fp += 1
+            else:
+                self.vn += 1
+
+    def populate(self, result_tuples):
+        for t in result_tuples:
+            self.judge(t)
+        self.n = float(self.vp + self.vn + self.fp + self.fn)
 

@@ -18,7 +18,7 @@ class FileDAO:
         return self.dataframe
 
     def get_folds(self, k):
-        if not self.folds_d[k]:
+        if not k in self.folds_d.keys():
             self.generate_list_of_folds(k)
         return self.folds_d[k]
 

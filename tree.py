@@ -157,9 +157,7 @@ class Tree:
 
 	def classify_instance(self, instance, cur_node):
 		if cur_node.is_leaf():
-			value = cur_node.value
-			value = value[0]			# return the value, not a list
-			return value
+			return cur_node.value
 		attribute = cur_node.value
 		direction = instance[attribute]
 		if not direction in cur_node.childs:
