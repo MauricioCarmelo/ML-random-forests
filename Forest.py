@@ -30,6 +30,9 @@ class Forest:
     def get_test_tuples(self):
         return self.tt_tuples
 
+    def get_c_matrix(self):
+        return self.c_matrix
+
     def train_forest(self):
         self.bagging.generate_bootstraps()
         bootstraps = self.bagging.get_bootstraps()
