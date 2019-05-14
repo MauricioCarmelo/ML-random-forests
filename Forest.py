@@ -30,6 +30,9 @@ class Forest:
     def get_test_tuples(self):
         return self.tt_tuples
 
+    def get_results(self):
+        return self.results
+
     def get_c_matrix(self):
         return self.c_matrix
 
