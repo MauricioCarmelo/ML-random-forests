@@ -59,6 +59,17 @@ class Simulation:
             self.fp_rate.append(c_matrix.get_fp_rate())
 
     def save(self):
+
+        # save the results of each forest
+        for i, forest in enumerate(self.tested_forests):
+            prefix = "forestresult_" + str(i)
+            results = forest.get_results()
+            info = {
+                "results": results
+            }
+            FileDAO.save_dictionary(prefix, self.k, self.n_tree, info)
+
+        # save metrics
         metrics = {
             "accuracy": self.accuracy,
             "error_rate": self.error_rate,
