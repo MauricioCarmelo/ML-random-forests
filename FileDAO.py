@@ -12,7 +12,11 @@ class FileDAO:
         self.dataframe = pd.DataFrame()
         self.folds_d = {}            # dictionary of lists of (len(dataframe)/k)-sized dataframes
 
-    def load_dataframe(self, filepath):
+    def load_dataframe(self, filepath, types):
+        self.file_path = filepath
+        self.dataframe = pd.read_csv(self.file_path, dtype=types) # open class as string
+
+    def load_raw_dataframe(self, filepath):
         self.file_path = filepath
         self.raw_dataframe = pd.read_csv(self.file_path)
 
@@ -72,12 +76,17 @@ class FileDAO:
             folds.append(self.dataframe[start:end])
         self.folds_d[k] = folds
 
+    def save_converted_dataframe(self, path_and_name):
+        #path_and_name = "data/converted_input.csv"
+        export_csv = self.dataframe.to_csv(path_and_name, index=None)
+        return 0
+
     @staticmethod
-    def save_dictionary(prefix, k, n_tree, info_as_dictionary):
+    def save_dictionary(prefix, sufix, k, n_tree, info_as_dictionary):
 
         info_as_dataframe = pd.DataFrame(info_as_dictionary)
 
-        filename = prefix + "_" + str(k) + "_" + str(n_tree)
+        filename = prefix + "_k_" + str(k) + "_ntree_" + str(n_tree) + sufix
         path = "collected_data/" + filename + ".csv"
         export_csv = info_as_dataframe.to_csv(path, index=None)
 

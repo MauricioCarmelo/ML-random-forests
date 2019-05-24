@@ -61,13 +61,16 @@ class Simulation:
     def save(self):
 
         # save the results of each forest
+        """
         for i, forest in enumerate(self.tested_forests):
-            prefix = "forestresult_" + str(i)
+            prefix = "forestresult"
+            sufix = "_forest_" + str(i)
             results = forest.get_results()
             info = {
                 "results": results
             }
-            FileDAO.save_dictionary(prefix, self.k, self.n_tree, info)
+            FileDAO.save_dictionary(prefix, sufix, self.k, self.n_tree, info)
+        """
 
         # save metrics
         metrics = {
@@ -79,7 +82,7 @@ class Simulation:
             "specificity": self.specificity,
             "fp_rate": self.fp_rate
         }
-        FileDAO.save_dictionary("simulationmetrics", self.k, self.n_tree, metrics)
+        FileDAO.save_dictionary("simulationmetrics", "", self.k, self.n_tree, metrics)
 
     def run(self):
         self.train()

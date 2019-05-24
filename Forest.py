@@ -1,6 +1,7 @@
 from Bagging import *
 from tree import *
 from metrics import *
+import time
 
 class Forest:
 
@@ -53,11 +54,14 @@ class Forest:
         for id, instance in test_set.iterrows():
             correct_value = instance[self.target]
             votes = []
+            tempo_inicio = time.time()
             for tree in self.trees:
                 vote = tree.classify(instance)
                 votes.append(vote)
+            tempo_fim = time.time()
+            print "Tempo para classificar floresta = " + str(tempo_fim - tempo_inicio)
             r = max(votes, key=votes.count)
-            r = r[0]
+            #r = r[0]
             self.results.append((correct_value, r))
 
     def calculate_metrics(self):

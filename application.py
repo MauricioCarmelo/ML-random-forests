@@ -1,8 +1,5 @@
-from FileDAO import *
-from Bagging import *
-from Bootstrap import *
 from simulation import *
-
+import time
 
 def print_tree(node):
     if node.is_leaf():
@@ -13,49 +10,51 @@ def print_tree(node):
             print "going to direction: " + str(direction)
             print_tree(child)
 
+target = "classe"
+positive_value = "4"        # 2 for benign, 4 for malignant
+
+categoricals = []
+numerics = ['clump_thickness',
+            'uniformity_of_cell_size',
+            'uniformity_of_cell_shape',
+            'marginal_adhesion',
+            'single_epithelial_cell_size',
+            'bare_nuclei',
+            'bland_chromatin',
+            'nomal_nucleoli',
+            'mitoses'
+            ]
+
+types = {"classe": str}
 filedao = FileDAO()
-filedao.load_dataframe("data/input_data3.csv")
+filedao.load_dataframe("data/dataset1/preprocessed_dataset.csv", types)
 
-target = "buys_computer"
-categoricals = ["age", "income", "student", "credit_rating"]
-numerics = []
-parameters = (5, target, categoricals, numerics)
+start = time.time()
 
+n_trees = [5]
+ks = [5]
 
-"""
-    SEPARATE THE FOLDS HERE
-"""
+for k in ks:        # number of folds
 
-simulation = Simulation(filedao.get_dataframe(), parameters)    # criar uma simulacao
-forest = simulation.run()
-roots = forest.get_tree_roots()
+    print "Starting process with K = " + str(k)
+    start_k = time.time()       # started K
 
-print roots
+    for n_tree in n_trees:
 
-for tree in roots:
-    print_tree(tree)
-    print
-    print
+        print "Starting process with n_tree = " + str(n_tree)
+        start_ntree = time.time()
 
+        parameters = (n_tree, target, positive_value, categoricals, numerics)
+        simulation = Simulation(filedao.get_folds(k), parameters)    # criar uma simulacao
+        simulation.run()
 
-# forests vai receber um dos folds da lista de folds para um valor de K
-# para cada fold, criar uma forest
+        end_ntree = time.time()
+        ntree_time = end_ntree - start_ntree
+        print "Time spent for ntree = " + str(n_tree) + ":" + str(ntree_time)
 
-    # forest.create()
-    # forest.train()
-    # forest.generate_statistics() - nao tenho certeza desse ainda
+    end_k = time.time()         # ended k
+    k_time = end_k - start_k
+    print "Time spent for K = " + str(k) + ":" + str(k_time)
+end = time.time()
 
-
-#bagging = Bagging(3, filedao)
-#boots = bagging.generate_bootstraps()
-
-"""
-for i, item in enumerate(boots):
-    print "Training set " + str(i+1)
-    print item.get_training_set()
-    print "Test set"
-    print item.get_test_set()
-    print
-"""
-
-
+print end - start

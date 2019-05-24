@@ -24,21 +24,31 @@ class CMatrix:
         self.fn += 1
 
     def get_accuracy(self):                # taxa de acerto
+        if self.n == 0:
+            return 0
         return (self.vp + self.vn)/self.n
 
     def get_error_rate(self):               # taxa de erro
+        if self.n == 0:
+            return 0
         return (self.fp + self.fn)/self.n   # err(f) = 1 - acc(f)
 
     def get_recall(self):                   # taxa de acerto na classe positiva - minimizar os falsos negativos
+        if self.vp + self.fn == 0:
+            return 0
         return self.vp/float(self.vp + self.fn)
 
     def get_sensibility(self):
         return self.get_recall()
 
     def get_precision(self):                # taxa das predicoes positivas que estao corretas
+        if self.vp + self.fp == 0:
+            return 0
         return self.vp/float(self.vp + self.fp)
 
     def get_specificity(self):              # taxa de acerto na classe negativa - minimizar os falsos positivos
+        if self.vn + self.fp == 0:
+            return 0
         return self.vn/float(self.vn + self.fp)
 
     def get_fp_rate(self):                  # taxa de falsos positivos TFP(f)
