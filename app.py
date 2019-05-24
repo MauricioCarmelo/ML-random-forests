@@ -31,5 +31,5 @@ inst = {
     "credit_rating": "fair"
 }
 
-print tree.classify(inst, raiz)
+print tree.classify_instance(inst, raiz)
 
